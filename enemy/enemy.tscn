@@ -1,0 +1,67 @@
+[gd_scene load_steps=11 format=3 uid="uid://cvjhcfrdeoc57"]
+
+[ext_resource type="Texture2D" uid="uid://w1iwul6mqn4e" path="res://enemy/assets/enemy1/enemy-sheet.png" id="1_2mvqj"]
+[ext_resource type="Script" uid="uid://cu4h31wwk5q0i" path="res://enemy/enemy.gd" id="1_ofsxj"]
+[ext_resource type="Shader" uid="uid://buvirxrsjp054" path="res://enemy/flash.gdshader" id="2_ppra6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p200p"]
+resource_local_to_scene = true
+shader = ExtResource("2_ppra6")
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_opacity = 0.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ofsxj"]
+atlas = ExtResource("1_2mvqj")
+region = Rect2(0, 0, 240, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ppra6"]
+atlas = ExtResource("1_2mvqj")
+region = Rect2(240, 0, 240, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p200p"]
+atlas = ExtResource("1_2mvqj")
+region = Rect2(480, 0, 240, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pmsee"]
+atlas = ExtResource("1_2mvqj")
+region = Rect2(720, 0, 240, 240)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1wwld"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ofsxj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ppra6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p200p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pmsee")
+}],
+"loop": true,
+"name": &"default",
+"speed": 7.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y5vj3"]
+radius = 67.0
+height = 172.0
+
+[node name="enemy" type="CharacterBody2D" groups=["enemy"]]
+z_index = 14
+scale = Vector2(0.6, 0.6)
+collision_layer = 8
+collision_mask = 10
+script = ExtResource("1_ofsxj")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_p200p")
+sprite_frames = SubResource("SpriteFrames_1wwld")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6)
+shape = SubResource("CapsuleShape2D_y5vj3")

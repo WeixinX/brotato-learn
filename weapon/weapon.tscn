@@ -1,0 +1,57 @@
+[gd_scene load_steps=8 format=3 uid="uid://dqb4cp872idkn"]
+
+[ext_resource type="Script" uid="uid://br1po2hke3bqe" path="res://weapon/weapon.gd" id="1_1f825"]
+[ext_resource type="Texture2D" uid="uid://drjt74ccqbtl1" path="res://weapon/assets/weapon1/weapon1.png" id="1_4ht74"]
+[ext_resource type="Shader" uid="uid://bv0wuugeba4en" path="res://weapon/weapon2.gdshader" id="2_1f825"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1f825"]
+resource_local_to_scene = true
+shader = ExtResource("2_1f825")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/width = 1.0
+shader_parameter/pattern = 0
+shader_parameter/inside = false
+shader_parameter/add_margins = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q8tx2"]
+atlas = ExtResource("1_4ht74")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1f825"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q8tx2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1f825"]
+radius = 147.575
+
+[node name="weapon" type="Node2D"]
+scale = Vector2(7, 7)
+script = ExtResource("1_1f825")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_1f825")
+sprite_frames = SubResource("SpriteFrames_1f825")
+
+[node name="shoot_pos" type="Marker2D" parent="."]
+position = Vector2(15.5714, 1.14286)
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="shoot_area" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="shoot_area"]
+shape = SubResource("CircleShape2D_1f825")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="shoot_area" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="shoot_area" to="." method="_on_area_2d_body_exited"]

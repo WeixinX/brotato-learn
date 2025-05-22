@@ -1,0 +1,95 @@
+[gd_scene load_steps=11 format=3 uid="uid://bv4j3lorgwf04"]
+
+[ext_resource type="Texture2D" uid="uid://dnyh7h4sf3qji" path="res://player/assets/player1/player1-sheet.png" id="1_oul6g"]
+[ext_resource type="Script" uid="uid://dfx0sycqqrilr" path="res://player/player.gd" id="1_rkbax"]
+[ext_resource type="PackedScene" uid="uid://b2321wk570ywd" path="res://weapon/now_weapons.tscn" id="3_g1dw6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rkbax"]
+atlas = ExtResource("1_oul6g")
+region = Rect2(0, 0, 240, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1dw6"]
+atlas = ExtResource("1_oul6g")
+region = Rect2(240, 0, 240, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yw30f"]
+atlas = ExtResource("1_oul6g")
+region = Rect2(480, 0, 240, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qjkh3"]
+atlas = ExtResource("1_oul6g")
+region = Rect2(720, 0, 240, 240)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rkbax"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rkbax")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g1dw6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yw30f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qjkh3")
+}],
+"loop": true,
+"name": &"player1",
+"speed": 7.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g1dw6"]
+radius = 59.0
+height = 164.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g1dw6"]
+radius = 761.553
+
+[node name="player" type="CharacterBody2D" groups=["player"]]
+z_index = 20
+scale = Vector2(0.65, 0.65)
+collision_mask = 3
+script = ExtResource("1_rkbax")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_rkbax")
+animation = &"player1"
+autoplay = "player1"
+frame_progress = 0.442394
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 13)
+shape = SubResource("CapsuleShape2D_g1dw6")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, 2)
+zoom = Vector2(0.9, 0.9)
+position_smoothing_enabled = true
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+
+[node name="stop" type="Area2D" parent="."]
+collision_mask = 24
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="stop"]
+position = Vector2(0, 26)
+shape = SubResource("CapsuleShape2D_g1dw6")
+
+[node name="now_weapons" parent="." instance=ExtResource("3_g1dw6")]
+
+[node name="drop_item" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="drop_item"]
+shape = SubResource("CircleShape2D_g1dw6")
+debug_color = Color(0.607855, 0.539559, 0.0446877, 0.42)
+
+[connection signal="body_entered" from="stop" to="." method="_on_stop_body_entered"]
+[connection signal="mouse_entered" from="stop" to="." method="_on_stop_mouse_entered"]
+[connection signal="mouse_exited" from="stop" to="." method="_on_stop_mouse_exited"]
+[connection signal="area_shape_entered" from="drop_item" to="." method="_on_drop_item_area_shape_entered"]
+[connection signal="body_entered" from="drop_item" to="." method="_on_drop_item_body_entered"]
+[connection signal="body_shape_entered" from="drop_item" to="." method="_on_drop_item_body_shape_entered"]
